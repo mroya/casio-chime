@@ -30,3 +30,22 @@ Um aplicativo de relógio digital inspirado no icônico **Casio F-91W**, desenvo
 1. **Clone o repositório:**
    ```bash
    git clone [https://github.com/SEU_USUARIO/casio-chime.git](https://github.com/SEU_USUARIO/casio-chime.git)
+2. **Instale as dependências:**
+   ```bash
+   npm install
+3. **Inicie o Expo Go:**
+   ```bash
+   npx expo start
+---
+
+📦 Como gerar o APK (Android)
+Este projeto utiliza o EAS Build para gerar instaladores nativos.
+
+Instale o EAS CLI: npm install -g eas-cli
+
+Configure o build: eas build:configure
+
+Gere o APK de teste:
+   ```bash
+eas build -p android --profile preview
+
