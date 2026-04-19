@@ -1,50 +1,84 @@
-# Welcome to your Expo app 👋
+# ⌚ Casio Chime - F-91W Digital Style
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## Get started
+Um aplicativo de relógio digital minimalista e funcional, inspirado no lendário design do **Casio F-91W**. Este projeto foi desenvolvido para recriar a experiência do clássico "bipe" de hora em hora (Hourly Chime) diretamente no smartphone, com foco em precisão e economia de bateria.
 
-1. Install dependencies
+---
 
+## 🚀 Funcionalidades
+
+- **Interface Nostálgica:** Visual LCD retro fiel aos relógios de cristal líquido, com moldura clássica e fonte digital de sete segmentos.
+- **Hourly Chime (Bipe de Hora):** Sinal sonoro clássico a cada hora cheia.
+- **Minute Chime (Bipe de Minuto):** Modo de alta frequência para gestão de tarefas curtas ou foco (Pomodoro style).
+- **Memória Persistente:** Salva automaticamente suas preferências de volume e estado dos bipes usando `AsyncStorage`.
+- **Alta Confiabilidade:** Implementação de notificações de sistema e alarmes de alta prioridade para funcionar mesmo com o ecrã bloqueado.
+
+---
+
+## 🛠️ Tecnologias e Bibliotecas
+
+O projeto utiliza o ecossistema **Expo** para garantir máxima compatibilidade entre dispositivos Android:
+
+- **Core:** React Native & Expo SDK  
+- **Áudio:** `expo-av`  
+- **Notificações:** `expo-notifications`  
+- **Armazenamento:** `@react-native-async-storage/async-storage`  
+- **UI/UX:** `expo-font` e `@react-native-community/slider`  
+
+---
+
+## 📦 Como Instalar e Rodar
+
+### Pré-requisitos
+- Node.js instalado  
+- Expo Go instalado no smartphone  
+
+### Passo a Passo
+
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/SEU_USUARIO/casio-chime.git
+2. **Entre na pasta do projeto:**
+   ```bash
+   cd casio-chime
+3. **Instale as dependências:**
    ```bash
    npm install
-   ```
-
-2. Start the app
-
+4. **Inicie o servidor de desenvolvimento:**
    ```bash
    npx expo start
-   ```
+5. **Escaneie o QR Code com o app Expo Go no Android.**
+---
+🏗️ Geração do APK (Nativo)
 
-In the output, you'll find options to open the app in a
+Para gerar um .apk usando o EAS Build:
+1. **Instale o CLI:**
+   ```bash
+   npm install -g eas-cli
+2. **Faça login:**
+   ```bash
+   eas login
+3. **Gere o APK:**
+   ```bash
+   eas build -p android --profile preview
+---
+⚠️ Configuração de Bateria (IMPORTANTE)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Para garantir que o bipe funcione com o celular bloqueado:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Vá em Configurações > Aplicativos**
+2. **Selecione Casio Chime**
+3. **Clique em Bateria**
+4. **Marque Sem restrições (Unrestricted)**
+---
+📄 Licença
 
-## Get a fresh project
+**Este projeto está sob a licença MIT. Sinta-se livre para clonar, modificar e distribuir.**
+---
+👨‍💻 Desenvolvedor
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Projeto desenvolvido por Márcio Roya como parte de um estudo prático de desenvolvimento mobile voltado para produtividade e design clássico.**
+---
