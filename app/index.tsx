@@ -13,7 +13,9 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-    priority: Notifications.AndroidNotificationPriority.MAX,
+    // Estas duas linhas abaixo resolvem o erro que você recebeu:
+    shouldShowBanner: true, 
+    shouldShowList: true,   
   }),
 });
 
