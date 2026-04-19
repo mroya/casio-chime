@@ -1,10 +1,21 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'; // <-- NOVO
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import { useFonts } from 'expo-font';
+import * as Notifications from 'expo-notifications'; // <-- NOVO
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Switch, Text, Vibration, View } from 'react-native';
+import { Platform, StyleSheet, Switch, Text, Vibration, View } from 'react-native';
+
+// Configura como as notificações aparecem com o app aberto
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    priority: Notifications.AndroidNotificationPriority.MAX,
+  }),
+});
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,18 +31,13 @@ export default function App() {
   });
 
   // --- LÓGICA DE PERSISTÊNCIA (MEMÓRIA) ---
-
-  // Função para salvar as configurações
   const saveSettings = async (chime: boolean, minChime: boolean, vol: number) => {
     try {
       const settings = JSON.stringify({ chime, minChime, vol });
       await AsyncStorage.setItem('@casio_settings', settings);
-    } catch (e) {
-      console.log("Erro ao salvar", e);
-    }
+    } catch (e) { console.log("Erro ao salvar", e); }
   };
 
-  // Função para carregar as configurações ao iniciar
   const loadSettings = async () => {
     try {
       const saved = await AsyncStorage.getItem('@casio_settings');
@@ -41,31 +47,64 @@ export default function App() {
         setIsMinuteChimeActive(minChime);
         setVolume(vol);
       }
-    } catch (e) {
-      console.log("Erro ao carregar", e);
+    } catch (e) { console.log("Erro ao carregar", e); }
+  };
+
+  // --- LÓGICA DE AGENDAMENTO NATIVO (ALERTA DE BLOQUEIO) ---
+  const configureNotifications = async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== 'granted') return;
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('chime-channel', {
+        name: 'Casio Chime',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250],
+        sound: 'default',
+      });
     }
   };
 
-  // Carregar tudo ao abrir o app
+  const scheduleChimes = async () => {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+
+    if (isChimeActive) {
+      // Agenda para disparar em cada hora cheia (minuto 0)
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "CASIO ⌚",
+          body: "Bipe de Hora Cheia",
+          priority: Notifications.AndroidNotificationPriority.MAX,
+        },
+        trigger: {
+          minute: 0,
+          repeats: true,
+          type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
+        } as any,
+      });
+    }
+  };
+
   useEffect(() => {
     loadSettings();
+    configureNotifications();
   }, []);
 
-  // Salvar sempre que algo mudar
   useEffect(() => {
     saveSettings(isChimeActive, isMinuteChimeActive, volume);
+    scheduleChimes(); // Re-agenda sempre que o usuário mudar o interruptor
   }, [isChimeActive, isMinuteChimeActive, volume]);
-
-  // --- FIM DA LÓGICA DE MEMÓRIA ---
 
   useEffect(() => {
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded]);
 
+  // Mantemos o timer apenas para o relógio na tela[cite: 2]
   useEffect(() => {
     const timer = setInterval(() => {
       const agora = new Date();
       setTime(agora);
+      // Se o app estiver aberto, ele toca o som via código também[cite: 2]
       if (agora.getSeconds() === 0) {
         if (isMinuteChimeActive || (isChimeActive && agora.getMinutes() === 0)) {
           triggerChime();
@@ -87,6 +126,7 @@ export default function App() {
 
   if (!fontsLoaded) return null;
 
+  // ... (Mantenha o seu return e estilos exatamente como estão[cite: 2])
   return (
     <View style={styles.container}>
       <View style={styles.watchBezel}>
